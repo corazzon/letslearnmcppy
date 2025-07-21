@@ -1,0 +1,53 @@
+{
+  "server": {
+    "name": "FastMCP Basic Example",
+    "version": "1.0.0",
+    "description": "A basic MCP server implementation using FastMCP framework",
+    "host": "localhost",
+    "port": 8000
+  },
+  "security": {
+    "allowed_directories": [
+      "./",
+      "../../../"
+    ],
+    "max_file_size_mb": 10,
+    "max_lines_per_file": 1000
+  },
+  "logging": {
+    "level": "INFO",
+    "file": "server.log",
+    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  },
+  "tools": {
+    "calculator": {
+      "enabled": true,
+      "operations": ["add", "subtract", "multiply", "divide"]
+    },
+    "weather": {
+      "enabled": true,
+      "mock_data": true,
+      "supported_cities": ["seoul", "tokyo", "newyork", "london"]
+    },
+    "file_reader": {
+      "enabled": true,
+      "default_max_lines": 100
+    },
+    "text_processor": {
+      "enabled": true,
+      "operations": ["uppercase", "lowercase", "reverse", "count"]
+    }
+  },
+  "resources": {
+    "config": {
+      "enabled": true
+    },
+    "help": {
+      "enabled": true
+    },
+    "logs": {
+      "enabled": true,
+      "default_max_lines": 50
+    }
+  }
+}
