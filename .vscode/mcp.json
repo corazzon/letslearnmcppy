@@ -5,15 +5,12 @@
 			"command": "uv",
 			"args": [
 				"run",
-				"--with",
-				"fastmcp",
+				"--directory",
+				"${workspaceFolder}",
 				"python",
 				"examples/fastmcp_basic/server.py"
 			],
-			"cwd": "${workspaceFolder}",
-			"env": {
-				"UV_PROJECT_ENVIRONMENT": "${workspaceFolder}/.venv"
-			}
+			"cwd": "${workspaceFolder}"
 		},
 		"fileSystem": {
 			"type": "stdio",
