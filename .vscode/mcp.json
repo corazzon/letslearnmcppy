@@ -2,11 +2,18 @@
 	"servers": {
 		"fastmcp_basic": {
 			"type": "stdio",
-			"command": "python",
+			"command": "uv",
 			"args": [
+				"run",
+				"--with",
+				"fastmcp",
+				"python",
 				"examples/fastmcp_basic/server.py"
 			],
-			"cwd": "${workspaceFolder}"
+			"cwd": "${workspaceFolder}",
+			"env": {
+				"UV_PROJECT_ENVIRONMENT": "${workspaceFolder}/.venv"
+			}
 		},
 		"fileSystem": {
 			"type": "stdio",
