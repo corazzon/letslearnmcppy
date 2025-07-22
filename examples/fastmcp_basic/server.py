@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 """
-FastMCP Basic Example Server
+FastMCP Basic Server
 
-A simple MCP server implementation using FastMCP framework
-that demonstrates basic tools and resources.
+A simple MCP server demonstrating basic tools and resources.
 """
 
-import asyncio
 import logging
-from typing import Any, Dict, List
+from datetime import datetime
 from fastmcp import FastMCP
+
+# Import tool and resource classes
 from tools.calculator import CalculatorTool
 from tools.weather import WeatherTool
 from tools.file_reader import FileReaderTool
@@ -21,94 +21,105 @@ from resources.logs import LogsResource
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler('server.log'),
-        logging.StreamHandler()
-    ]
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
-
 logger = logging.getLogger(__name__)
 
-# Create FastMCP server instance
-server = FastMCP("FastMCP Basic Example")
+# Create the FastMCP server
+server = FastMCP("FastMCP Basic Server")
 
-def setup_tools():
-    """Register all tools with the server"""
-    # Calculator tool
-    calculator = CalculatorTool()
-    server.add_tool(calculator.add)
-    server.add_tool(calculator.subtract)
-    server.add_tool(calculator.multiply)
-    server.add_tool(calculator.divide)
-    
-    # Weather tool
-    weather = WeatherTool()
-    server.add_tool(weather.get_weather)
-    
-    # File reader tool
-    file_reader = FileReaderTool()
-    server.add_tool(file_reader.read_file)
-    server.add_tool(file_reader.list_files)
-    
-    # Text processor tool
-    text_processor = TextProcessorTool()
-    server.add_tool(text_processor.to_uppercase)
-    server.add_tool(text_processor.to_lowercase)
-    server.add_tool(text_processor.reverse_text)
-    server.add_tool(text_processor.count_words)
-    
-    logger.info("All tools registered successfully")
+# Initialize tool instances
+calculator = CalculatorTool()
+weather = WeatherTool()
+file_reader = FileReaderTool()
+text_processor = TextProcessorTool()
 
-def setup_resources():
-    """Register all resources with the server"""
-    # Configuration resource
-    config_resource = ConfigResource()
-    server.add_resource(config_resource.get_config)
-    
-    # Help resource
-    help_resource = HelpResource()
-    server.add_resource(help_resource.get_help)
-    server.add_resource(help_resource.get_tool_help)
-    
-    # Logs resource
-    logs_resource = LogsResource()
-    server.add_resource(logs_resource.get_logs)
-    
-    logger.info("All resources registered successfully")
+# Initialize resource instances
+config_resource = ConfigResource()
+help_resource = HelpResource()
+logs_resource = LogsResource()
 
-async def main():
-    """Main server function"""
-    logger.info("Starting FastMCP Basic Example Server...")
+# Register calculator tools
+@server.tool
+def add(a: float, b: float) -> float:
+    """Add two numbers together."""
+    return calculator.add(a, b)
+
+@server.tool
+def subtract(a: float, b: float) -> float:
+    """Subtract second number from first number."""
+    return calculator.subtract(a, b)
+
+@server.tool
+def multiply(a: float, b: float) -> float:
+    """Multiply two numbers."""
+    return calculator.multiply(a, b)
+
+@server.tool
+def divide(a: float, b: float) -> float:
+    """Divide first number by second number."""
+    return calculator.divide(a, b)
+
+# Register weather tool
+@server.tool
+def get_weather(city: str) -> dict:
+    """Get current weather information for a city."""
+    return weather.get_weather(city)
+
+# Register file reader tools
+@server.tool
+def list_files(directory_path: str = ".") -> dict:
+    """List files and directories in a given path."""
+    return file_reader.list_files(directory_path)
+
+@server.tool
+def read_file(file_path: str, max_lines: int = 100) -> dict:
+    """Read contents of a text file safely."""
+    return file_reader.read_file(file_path, max_lines)
+
+# Register text processor tools
+@server.tool
+def count_words(text: str) -> dict:
+    """Count words, characters, and lines in text."""
+    return text_processor.count_words(text)
+
+@server.tool
+def reverse_text(text: str) -> str:
+    """Reverse the order of characters in text."""
+    return text_processor.reverse_text(text)
+
+@server.tool
+def to_uppercase(text: str) -> str:
+    """Convert text to uppercase."""
+    return text_processor.to_uppercase(text)
+
+@server.tool
+def to_lowercase(text: str) -> str:
+    """Convert text to lowercase."""
+    return text_processor.to_lowercase(text)
+
+# Register resources
+@server.resource("config://server")
+def get_config() -> str:
+    """Get server configuration information."""
+    return config_resource.get_config()
+
+@server.resource("help://tools/{tool_name}")
+def get_help(tool_name: str = "all") -> str:
+    """Get help information for tools."""
+    return help_resource.get_help(tool_name)
+
+@server.resource("logs://server/{log_type}")
+def get_logs(log_type: str = "all") -> str:
+    """Get server logs."""
+    return logs_resource.get_logs(log_type)
+
+def main():
+    """Main function to run the server."""
+    logger.info("Starting FastMCP Basic Server...")
     
-    try:
-        # Setup tools and resources
-        setup_tools()
-        setup_resources()
-        
-        logger.info("Server setup completed")
-        logger.info("Available tools:")
-        for tool_name in server.list_tools():
-            logger.info(f"  - {tool_name}")
-        
-        logger.info("Available resources:")
-        for resource_name in server.list_resources():
-            logger.info(f"  - {resource_name}")
-        
-        # Run the server
-        await server.run()
-        
-    except Exception as e:
-        logger.error(f"Server error: {e}")
-        raise
-    finally:
-        logger.info("Server shutting down...")
+    # Let FastMCP handle the event loop
+    server.run()
 
 if __name__ == "__main__":
-    try:
-        asyncio.run(main())
-    except KeyboardInterrupt:
-        logger.info("Server stopped by user")
-    except Exception as e:
-        logger.error(f"Fatal error: {e}")
-        exit(1)
+    main()

@@ -5,8 +5,8 @@
 			"command": "uv",
 			"args": [
 				"run",
-				"--directory",
-				"${workspaceFolder}",
+				"--with",
+				"fastmcp",
 				"python",
 				"examples/fastmcp_basic/server.py"
 			],

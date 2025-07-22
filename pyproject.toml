@@ -1,10 +1,11 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
 [project]
 name = "letslearnmcp"
 version = "0.1.0"
-description = "Let's learn MCP (Model Context Protocol)"
-authors = [
-    {name = "corazzon", email = "your-email@example.com"}
-]
+description = "Learning MCP (Model Context Protocol) with Python"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
@@ -15,18 +16,20 @@ dependencies = [
 dev = [
     "pytest",
     "black",
-    "flake8",
-    "mypy",
+    "isort",
+    "mypy"
 ]
 
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+[tool.black]
+line-length = 88
+target-version = ['py310']
 
-[tool.uv]
-dev-dependencies = [
-    "pytest>=7.0.0",
-    "black>=22.0.0",
-    "flake8>=4.0.0",
-    "mypy>=0.910",
-]
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
