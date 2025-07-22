@@ -154,7 +154,7 @@ uv pip install -e ".[dev]"
 ### 📖 참고 자료
 - [MCP 사양 문서](https://modelcontextprotocol.io/)
 - [FastMCP GitHub](https://github.com/jlowin/fastmcp)
-- [VS Code MCP 가이드](https://code.visualstudio.com/docs/copilot/mcp-servers)
+- [VS Code MCP 가이드](https://code.visualstudio.com/docs/copilot/chat/mcp-servers)
 
 ## 🔒 보안 기능
 
