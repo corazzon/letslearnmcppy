@@ -1,61 +1,25 @@
 {
-  "inputs": [
-    {
-      "type": "promptString",
-      "id": "github-token",
-      "description": "GitHub Personal Access Token",
-      "password": true
-    },
-    {
-      "type": "promptString", 
-      "id": "perplexity-key",
-      "description": "Perplexity API Key",
-      "password": true
-    }
-  ],
-  "servers": {
-    "fastmcp_basic": {
-      "type": "stdio",
-      "command": "python",
-      "args": ["examples/fastmcp_basic/server.py"],
-      "cwd": "${workspaceFolder}"
-    },
-    "fileSystem": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "mcp-server-filesystem"],
-      "env": {
-        "ALLOWED_DIRECTORIES": "${workspaceFolder}"
-      }
-    },
-    "github": {
-      "url": "https://api.githubcopilot.com/mcp/"
-    },
-    "perplexity": {
-      "type": "stdio", 
-      "command": "npx",
-      "args": ["-y", "server-perplexity-ask"],
-      "env": {
-        "PERPLEXITY_API_KEY": "${input:perplexity-key}"
-      }
-    },
-    "fetch": {
-      "type": "stdio",
-      "command": "uvx", 
-      "args": ["mcp-server-fetch"]
-    },
-    "brave": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "mcp-server-brave-search"],
-      "env": {
-        "BRAVE_API_KEY": "your-brave-api-key-here"
-      }
-    },
-    "memory": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "mcp-server-memory"]
-    }
-  }
+	"servers": {
+		"fastmcp_basic": {
+			"type": "stdio",
+			"command": "python",
+			"args": [
+				"examples/fastmcp_basic/server.py"
+			],
+			"cwd": "${workspaceFolder}"
+		},
+		"fileSystem": {
+			"type": "stdio",
+			"command": "npx",
+			"args": [
+				"-y",
+				"mcp-server-filesystem",
+				"${workspaceFolder}"
+			]
+		},
+		"github": {
+			"url": "https://api.githubcopilot.com/mcp/",
+			"type": "http"
+		}
+	}
 }
